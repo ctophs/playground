@@ -22,21 +22,22 @@ globals "terraform" "providers" "azurerm" {
 }
 
 globals "terraform" "modules" {
-  # Each module lives in its own repo, versioned independently via Git tags.
+  # Modules live in this repo under modules/. Terraform fetches them via git
+  # using the // subdirectory syntax. Bump the version tag to roll out changes.
   resource_group = {
-    source  = "git::https://github.com/ctophs/terraform-azure-resource-group.git"
+    source  = "git::https://github.com/ctophs/playground.git//modules/resource-group"
     version = "v1.0.0"
   }
   user_assigned_identity = {
-    source  = "git::https://github.com/ctophs/terraform-azure-user-assigned-identity.git"
+    source  = "git::https://github.com/ctophs/playground.git//modules/user-assigned-identity"
     version = "v1.0.0"
   }
   container_app_environment = {
-    source  = "git::https://github.com/ctophs/terraform-azure-container-app-environment.git"
+    source  = "git::https://github.com/ctophs/playground.git//modules/container-app-environment"
     version = "v1.0.0"
   }
   container_app = {
-    source  = "git::https://github.com/ctophs/terraform-azure-container-app.git"
+    source  = "git::https://github.com/ctophs/playground.git//modules/container-app"
     version = "v1.0.0"
   }
 }
