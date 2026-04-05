@@ -24,19 +24,19 @@ globals "terraform" "providers" "azurerm" {
 globals "terraform" "modules" {
   # Each module lives in its own repo, versioned independently via Git tags.
   resource_group = {
-    source  = "git::https://github.com/org/terraform-azure-resource-group.git"
+    source  = "git::https://github.com/ctophs/terraform-azure-resource-group.git"
     version = "v1.0.0"
   }
   user_assigned_identity = {
-    source  = "git::https://github.com/org/terraform-azure-user-assigned-identity.git"
+    source  = "git::https://github.com/ctophs/terraform-azure-user-assigned-identity.git"
     version = "v1.0.0"
   }
   container_app_environment = {
-    source  = "git::https://github.com/org/terraform-azure-container-app-environment.git"
+    source  = "git::https://github.com/ctophs/terraform-azure-container-app-environment.git"
     version = "v1.0.0"
   }
   container_app = {
-    source  = "git::https://github.com/org/terraform-azure-container-app.git"
+    source  = "git::https://github.com/ctophs/terraform-azure-container-app.git"
     version = "v1.0.0"
   }
 }
