@@ -1,6 +1,6 @@
 # Terraform working directories
-**/.terraform/
-**/.terraform.lock.hcl
+.terraform/
+.terraform.lock.hcl
 
 # Local state files
 .terraform-state/
@@ -9,4 +9,4 @@
 .terraform-plugin-cache/
 
 # Terramate-generated files (comment out to commit generated files)
-**/_tm_*.tf
+_tm_*.tf
