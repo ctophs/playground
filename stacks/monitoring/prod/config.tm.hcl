@@ -7,7 +7,8 @@ globals "azure" "tags" {
   environment = "prod"
 }
 
-# To pin specific image versions in prod, override container_apps here:
+# To override any container app values in prod (image versions, ports, etc.),
+# redefine the full container_apps map here — Terramate replaces maps entirely:
 # globals "azure" "workload" {
 #   container_apps = {
 #     gatus = {

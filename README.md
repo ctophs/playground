@@ -155,7 +155,7 @@ container_apps = {
 }
 ```
 
-Pro Eintrag werden automatisch eine User Assigned Identity und eine Container App erstellt. Um in Prod eine gepinnte Image-Version zu verwenden, kann die Map in `stacks/<workload>/prod/config.tm.hcl` überschrieben werden (siehe Kommentar in [stacks/monitoring/prod/config.tm.hcl](stacks/monitoring/prod/config.tm.hcl)).
+Pro Eintrag werden automatisch eine User Assigned Identity und eine Container App erstellt. Um einzelne Werte (Image-Version, Port, …) pro Umgebung abweichend zu setzen, wird die komplette Map in der Umgebungs-`config.tm.hcl` überschrieben — Terramate mergt Maps nicht tief, sondern ersetzt sie vollständig (siehe Kommentar in [stacks/monitoring/prod/config.tm.hcl](stacks/monitoring/prod/config.tm.hcl)).
 
 ## Generierte Dateien
 
