@@ -60,13 +60,14 @@ generate_hcl "_tm_main.tf" {
     # ------------------------------------------------------------------
 
     module "cae" {
-      source                   = "${global.terraform.modules.container_app_environment.source}?ref=${global.terraform.modules.container_app_environment.version}"
-      name                     = "cae-${global.azure.workload.name}-${global.azure.environment}"
-      resource_group_name      = module.rg_apps.name
-      location                 = global.azure.location
-      uami_id                  = module.uami_cae.id
-      infrastructure_subnet_id = tm_try(global.azure.workload.subnet_id, null)
-      tags                     = global.azure.tags
+      source                         = "${global.terraform.modules.container_app_environment.source}?ref=${global.terraform.modules.container_app_environment.version}"
+      name                           = "cae-${global.azure.workload.name}-${global.azure.environment}"
+      resource_group_name            = module.rg_apps.name
+      location                       = global.azure.location
+      uami_id                        = module.uami_cae.id
+      internal_load_balancer_enabled = true
+      infrastructure_subnet_id       = tm_try(global.azure.workload.subnet_id, null)
+      tags                           = global.azure.tags
     }
 
     # ------------------------------------------------------------------
@@ -95,7 +96,6 @@ generate_hcl "_tm_main.tf" {
       uami_id                      = module.uami_apps[each.key].id
       image                        = each.value.image
       port                         = each.value.port
-      location                     = local.location
       tags                         = local.tags
     }
   }
