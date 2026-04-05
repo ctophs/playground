@@ -167,6 +167,22 @@ Dateien mit dem Präfix `_tm_` werden von Terramate verwaltet und dürfen nicht 
 | `_tm_backend.tf` | Lokales Terraform-Backend (State unter `.terraform-state/`) |
 | `_tm_main.tf` | Azure-Ressourcen des Workloads (nur bei Tag `container-workload`) |
 
+## Module testen
+
+Jedes Modul unter `modules/` enthält Terraform-Tests unter `tests/`. Die Tests verwenden einen Mock-Provider und benötigen keine Azure-Verbindung.
+
+```bash
+cd modules/<modul-name>
+terraform init
+terraform test
+```
+
+Alle Module auf einmal:
+
+```bash
+for m in modules/*/; do (cd "$m" && terraform init -no-color 2>/dev/null && terraform test -no-color); done
+```
+
 ## Nützliche Befehle
 
 ```bash
