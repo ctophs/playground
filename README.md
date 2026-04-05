@@ -140,7 +140,7 @@ Weitere Stacks (z.B. `networking/`) können parallel neben `container-workload/`
 
 ## Container Apps konfigurieren
 
-Container Apps werden in `config.tm.hcl` des jeweiligen Workloads als Map definiert:
+Der `container-workload`-Stack selbst enthält keine Konfiguration — er erbt alles aus den übergeordneten `config.tm.hcl`-Dateien. Die Container Apps werden auf Workload-Ebene in `stacks/<workload>/config.tm.hcl` definiert:
 
 ```hcl
 container_apps = {
