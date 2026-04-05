@@ -25,8 +25,14 @@ Dieses Repository enthält eine [Terramate](https://terramate.io/)-Monorepo-Stru
 └── stacks/
     └── monitoring/
         ├── config.tm.hcl              # Workload-Globals (Name, Subscriptions, Container Apps)
-        ├── prod/stack.tm.hcl          # Stack "monitoring-prod"
-        └── test/stack.tm.hcl          # Stack "monitoring-test"
+        ├── prod/
+        │   ├── config.tm.hcl          # Umgebungs-Globals (environment=prod, subscription_id)
+        │   └── container-workload/
+        │       └── stack.tm.hcl       # Stack "monitoring-prod-container-workload"
+        └── test/
+            ├── config.tm.hcl          # Umgebungs-Globals (environment=test, subscription_id)
+            └── container-workload/
+                └── stack.tm.hcl       # Stack "monitoring-test-container-workload"
 ```
 
 ## Erste Schritte
@@ -89,27 +95,52 @@ terramate run terraform apply
 
 ## Einen neuen Workload hinzufügen
 
+Jeder Workload besteht aus drei Ebenen: **Workload-Globals → Umgebungs-Globals → Stacks**.
+
 1. Verzeichnis unter `stacks/<workload-name>/` anlegen.
 2. `config.tm.hcl` mit Workload-Globals erstellen (Name, Subscriptions, Container Apps).
-3. Pro Umgebung ein Unterverzeichnis (`test/`, `prod/`, …) mit `stack.tm.hcl` anlegen und das Tag `container-workload` setzen.
-4. `terramate generate` ausführen — `_tm_main.tf` wird automatisch generiert.
+3. Pro Umgebung ein Unterverzeichnis (`test/`, `prod/`, …) mit eigener `config.tm.hcl` für die Umgebungs-Globals anlegen.
+4. Unterhalb der Umgebung Stacks anlegen — z.B. `container-workload/`:
+   ```bash
+   terramate create stacks/<workload>/dev/container-workload
+   ```
+5. Den generierten `stack.tm.hcl` mit dem gewünschten Namen und den Tags versehen.
+6. `terramate generate` ausführen — `_tm_main.tf` wird für alle Stacks mit Tag `container-workload` generiert.
 
-Beispiel für eine neue Umgebung in einem Workload:
+Beispiel für eine neue Umgebung:
+
+```
+stacks/<workload>/
+  config.tm.hcl               # Workload-Globals
+  dev/
+    config.tm.hcl             # Umgebungs-Globals
+    container-workload/
+      stack.tm.hcl            # Stack-Definition
+```
 
 ```hcl
-# stacks/<workload>/dev/stack.tm.hcl
-stack {
-  name        = "<workload>-dev"
-  description = "..."
-  id          = "<uuid>"          # terramate create . erzeugt eine neue ID
-  tags        = ["<workload>", "dev", "container-workload"]
-}
-
+# stacks/<workload>/dev/config.tm.hcl
 globals "azure" {
   environment     = "dev"
   subscription_id = global.azure.workload.subscription_ids["dev"]
 }
+
+globals "azure" "tags" {
+  environment = "dev"
+}
 ```
+
+```hcl
+# stacks/<workload>/dev/container-workload/stack.tm.hcl
+stack {
+  name        = "<workload>-dev-container-workload"
+  description = "..."
+  id          = "<uuid>"   # wird von terramate create automatisch gesetzt
+  tags        = ["<workload>", "dev", "container-workload"]
+}
+```
+
+Weitere Stacks (z.B. `networking/`) können parallel neben `container-workload/` angelegt werden und erben dieselben Umgebungs-Globals.
 
 ## Container Apps konfigurieren
 
@@ -128,7 +159,7 @@ container_apps = {
 }
 ```
 
-Pro Eintrag werden automatisch eine User Assigned Identity und eine Container App erstellt. Um in Prod eine gepinnte Image-Version zu verwenden, kann die Map im `stack.tm.hcl` der jeweiligen Umgebung überschrieben werden (siehe Kommentar in [stacks/monitoring/prod/stack.tm.hcl](stacks/monitoring/prod/stack.tm.hcl)).
+Pro Eintrag werden automatisch eine User Assigned Identity und eine Container App erstellt. Um in Prod eine gepinnte Image-Version zu verwenden, kann die Map in `stacks/<workload>/prod/config.tm.hcl` überschrieben werden (siehe Kommentar in [stacks/monitoring/prod/config.tm.hcl](stacks/monitoring/prod/config.tm.hcl)).
 
 ## Generierte Dateien
 
@@ -150,5 +181,5 @@ terramate list
 terramate list --changed
 
 # Einen neuen Stack anlegen
-terramate create stacks/<workload>/<env>
+terramate create stacks/<workload>/<env>/<stack-name>
 ```

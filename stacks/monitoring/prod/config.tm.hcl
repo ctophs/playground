@@ -1,10 +1,3 @@
-stack {
-  name        = "monitoring-prod"
-  description = "Container workload 'monitoring' in the prod environment (s_monitoring_prod)"
-  id          = "00f80ea1-27a6-427d-a8f6-18a7dc1e467d"
-  tags        = ["monitoring", "prod", "container-workload"]
-}
-
 globals "azure" {
   environment     = "prod"
   subscription_id = global.azure.workload.subscription_ids["prod"]
