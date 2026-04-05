@@ -17,18 +17,18 @@ run "creates_environment_with_consumption_profile" {
   }
 
   assert {
-    condition     = azurerm_container_app_environment.this.workload_profile[0].name == "Consumption"
+    condition     = tolist(azurerm_container_app_environment.this.workload_profile)[0].name == "Consumption"
     error_message = "Workload profile name must be 'Consumption'."
   }
 
   assert {
-    condition     = azurerm_container_app_environment.this.workload_profile[0].workload_profile_type == "Consumption"
+    condition     = tolist(azurerm_container_app_environment.this.workload_profile)[0].workload_profile_type == "Consumption"
     error_message = "Workload profile type must be 'Consumption'."
   }
 
   assert {
-    condition     = azurerm_container_app_environment.this.internal_load_balancer_enabled == false
-    error_message = "Internal LB should default to false."
+    condition     = azurerm_container_app_environment.this.internal_load_balancer_enabled == null
+    error_message = "Internal LB should be null when no subnet is provided."
   }
 }
 
