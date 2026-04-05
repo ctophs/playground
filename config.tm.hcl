@@ -23,21 +23,21 @@ globals "terraform" "providers" "azurerm" {
 
 globals "terraform" "modules" {
   # Modules live in this repo under modules/. Terraform fetches them via git
-  # using the // subdirectory syntax. Bump the version tag to roll out changes.
+  # using the // subdirectory syntax. Change the version to a tag or commit SHA to pin a specific version.
   resource_group = {
     source  = "git::https://github.com/ctophs/playground.git//modules/resource-group"
-    version = "v1.0.0"
+    version = "master"
   }
   user_assigned_identity = {
     source  = "git::https://github.com/ctophs/playground.git//modules/user-assigned-identity"
-    version = "v1.0.0"
+    version = "master"
   }
   container_app_environment = {
     source  = "git::https://github.com/ctophs/playground.git//modules/container-app-environment"
-    version = "v1.0.0"
+    version = "master"
   }
   container_app = {
     source  = "git::https://github.com/ctophs/playground.git//modules/container-app"
-    version = "v1.0.0"
+    version = "master"
   }
 }
