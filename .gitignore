@@ -5,8 +5,9 @@
 # Local state files
 .terraform-state/
 
-# Terramate plugin cache
-.terraform-plugin-cache/
+# Terramate plugin cache (directory tracked via .gitkeep, contents ignored)
+.terraform-plugin-cache/*
+!.terraform-plugin-cache/.gitkeep
 
 # Terramate-generated files (comment out to commit generated files)
 _tm_*.tf

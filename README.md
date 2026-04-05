@@ -73,10 +73,6 @@ terramate generate
 ### 4. Stacks initialisieren
 
 ```bash
-# Plugin-Cache-Verzeichnis anlegen (einmalig)
-mkdir -p .terraform-plugin-cache
-
-# Alle Stacks initialisieren
 terramate run terraform init
 ```
 
